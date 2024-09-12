@@ -1,32 +1,21 @@
 from pymongo import MongoClient
 import os
 
-def setup_database():
-    # Load environment variables
-    DATABASE_URL = os.getenv('MONGODB_URI', 'mongodb+srv://vigneshselvaa9940:iambatman@cluster0.qlzkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+# Load environment variables
+DATABASE_URL = os.getenv('MONGODB_URI', 'mongodb+srv://vigneshselvaa9940:iambatman@cluster0.qlzkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
-    try:
-        # Create a MongoDB client
-        client = MongoClient(DATABASE_URL)
-        
-        # Test the connection
-        client.server_info()  # Forces a call to the server to check if the connection is successful
-        
-        # Select the database
-        db = client.healthcare_system
-        
-        # Define collections
-        users_collection = db.users
-        doctors_collection = db.doctors
-        patients_collection = db.patients
+# Create a MongoDB client
+client = MongoClient(DATABASE_URL)
 
-        print("Database and collections set up successfully.")
-        return users_collection, doctors_collection, patients_collection
-        
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None, None, None
+# Select the database
+db = client.healthcare_system
 
-# Call the setup function
-users_collection, doctors_collection, patients_collection = setup_database()
+# Define collections
+users_collection = db.users
+doctors_collection = db.doctors
+patients_collection = db.patients
 
+# Ensure collections are initialized
+assert users_collection is not None, "Users collection is not initialized"
+assert doctors_collection is not None, "Doctors collection is not initialized"
+assert patients_collection is not None, "Patients collection is not initialized"
