@@ -1,3 +1,4 @@
+# app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import users_collection, doctors_collection, patients_collection
@@ -22,6 +23,7 @@ def login_signup(role):
             if user:
                 st.session_state['username'] = username
                 st.session_state['role'] = role
+                st.session_state['view'] = f"{role}_dashboard"
                 st.write("Logged in successfully!")
                 if role == 'patient':
                     patient_dashboard()
@@ -32,7 +34,7 @@ def login_signup(role):
 
 def patient_dashboard():
     st.title("Patient Dashboard")
-    
+
     # Show list of doctors
     doctors = doctors_collection.find()
     doctor_options = [doctor['name'] for doctor in doctors]
@@ -105,13 +107,8 @@ def patient_dashboard():
 
 def doctor_dashboard():
     st.title("Doctor Dashboard")
-
-    # Ensure session_state has 'username'
-    if 'username' not in st.session_state:
-        st.write("User not logged in.")
-        return
-
-    doctor_name = st.session_state['username']
+    
+    doctor_name = st.session_state.get('username')
     doctor = doctors_collection.find_one({"name": doctor_name})
     
     if doctor:
@@ -146,19 +143,25 @@ def doctor_dashboard():
                 st.write("---")
         else:
             st.write("No patient data available.")
+    else:
+        st.write("Doctor not found.")
 
 def main():
     if 'role' not in st.session_state:
+        st.write("Session state:", st.session_state)
         st.title("Select User Type")
         role = st.selectbox("Select your role", ["Patient", "Doctor"])
         if st.button("Proceed"):
             st.session_state['role'] = role.lower()
             login_signup(st.session_state['role'])
     else:
+        st.write("Session state:", st.session_state)
         if st.session_state['role'] == 'patient':
             patient_dashboard()
         elif st.session_state['role'] == 'doctor':
             doctor_dashboard()
+        else:
+            st.write("Invalid role.")
 
 if __name__ == "__main__":
     main()
