@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import os
 
 # Load environment variables
-DATABASE_URL = os.getenv('MONGODB_URI', 'mongodb+srv://vigneshselvaa9940:wPboi3avrKoZtjaE@cluster0.qlzkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+DATABASE_URL = os.getenv('MONGODB_URI', 'mongodb+srv://vigneshselvaa9940:iambatman@cluster0.qlzkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 # Create a MongoDB client
 client = MongoClient(DATABASE_URL)
