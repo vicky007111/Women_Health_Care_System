@@ -25,9 +25,9 @@ def login_signup(role):
                 st.session_state['role'] = role
                 st.write("Logged in successfully!")
                 if role == 'patient':
-                    patient_dashboard()
+                    st.experimental_rerun()  # To trigger the update and display the correct dashboard
                 elif role == 'doctor':
-                    doctor_dashboard()
+                    st.experimental_rerun()  # To trigger the update and display the correct dashboard
             else:
                 st.write("Invalid credentials.")
 
@@ -45,9 +45,9 @@ def patient_dashboard():
     pain_level = st.slider("Menstrual Pain Level (1-10)", 1, 10)
     bleeding_intensity = st.selectbox("Bleeding Intensity", ["Normal", "Heavy", "Very Heavy"])
     missed_periods = st.selectbox("Missed Periods", ["Yes", "No"])
-    systolic_bp = st.number_input("Systolic Blood Pressure")
-    diastolic_bp = st.number_input("Diastolic Blood Pressure")
-    heart_rate = st.number_input("Heart Rate (bpm)")
+    systolic_bp = st.number_input("Systolic Blood Pressure", min_value=0)
+    diastolic_bp = st.number_input("Diastolic Blood Pressure", min_value=0)
+    heart_rate = st.number_input("Heart Rate (bpm)", min_value=0)
 
     # Submit button
     if st.button("Submit"):
