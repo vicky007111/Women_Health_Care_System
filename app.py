@@ -1,7 +1,7 @@
 # app.py
 import streamlit as st
 import matplotlib.pyplot as plt
-from setup_database import users_collection, doctors_collection, patients_collection
+from db import users_collection, doctors_collection, patients_collection
 
 def login_signup(role):
     st.title(f"{role.capitalize()} Login/Signup")
