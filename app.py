@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 from db import users_collection, doctors_collection, patients_collection
@@ -25,9 +24,9 @@ def login_signup(role):
                 st.session_state['role'] = role
                 st.write("Logged in successfully!")
                 if role == 'patient':
-                    st.experimental_rerun()  # To trigger the update and display the correct dashboard
+                    patient_dashboard()
                 elif role == 'doctor':
-                    st.experimental_rerun()  # To trigger the update and display the correct dashboard
+                    doctor_dashboard()
             else:
                 st.write("Invalid credentials.")
 
@@ -45,9 +44,9 @@ def patient_dashboard():
     pain_level = st.slider("Menstrual Pain Level (1-10)", 1, 10)
     bleeding_intensity = st.selectbox("Bleeding Intensity", ["Normal", "Heavy", "Very Heavy"])
     missed_periods = st.selectbox("Missed Periods", ["Yes", "No"])
-    systolic_bp = st.number_input("Systolic Blood Pressure", min_value=0)
-    diastolic_bp = st.number_input("Diastolic Blood Pressure", min_value=0)
-    heart_rate = st.number_input("Heart Rate (bpm)", min_value=0)
+    systolic_bp = st.number_input("Systolic Blood Pressure")
+    diastolic_bp = st.number_input("Diastolic Blood Pressure")
+    heart_rate = st.number_input("Heart Rate (bpm)")
 
     # Submit button
     if st.button("Submit"):
@@ -106,7 +105,12 @@ def patient_dashboard():
 
 def doctor_dashboard():
     st.title("Doctor Dashboard")
-    
+
+    # Ensure session_state has 'username'
+    if 'username' not in st.session_state:
+        st.write("User not logged in.")
+        return
+
     doctor_name = st.session_state['username']
     doctor = doctors_collection.find_one({"name": doctor_name})
     
